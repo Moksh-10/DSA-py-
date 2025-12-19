@@ -7,16 +7,19 @@ class min_heap:
 
     def __repr__(self):
         return str(self.heap)
-
+    
+    # O(logn)
     def insert(self, key, value):
         self.heap.append((key, value))
         self._sift_up(len(self.heap) - 1)
 
+    # O(1)
     def peek_min(self):
         if not self.heap:
             raise IndexError("empty heap")
         return self.heap[0]
 
+    #O(logn)
     def extract_min(self):
         if not self.heap:
             raise IndexError("empty heap")
@@ -28,14 +31,20 @@ class min_heap:
             self._sift_down(0)
 
         return min_ele
-
+    
+    #O(n)
     def heapify(self, elements):
         self.heap = list(elements)
 
+        for i in reversed(range(self._parent(len(self.heap) - 1) + 1)):
+            self._sift_down(i)
 
-
+    #O(n)
     def meld(self, other_heap):
-        pass
+        combined_heap = self.heap + other_heap.heap
+        self.heapify(combined_heap)
+
+        other_heap.heap = []
 
     def _parent(self, index):
         return (index + 1) // 2 if index != 0 else None
@@ -48,6 +57,7 @@ class min_heap:
         rig = 2 * index + 2
         return rig if rig < len(self.heap) else None
 
+    #O(logn)
     def _sift_up(self, index): #swim
         pi = self._parent(index)
 
@@ -56,6 +66,7 @@ class min_heap:
             index = pi
             pi = self._parent(index)
 
+    #O(logn)
     def _sift_down(self, index): #sink
         while True:
             sm = index
@@ -73,4 +84,12 @@ class min_heap:
             self.heap[index], self.heap[sm] = self.heap[sm], self.heap[index]
             index = sm
 
+if __name__ == "__main__":
+    hp = min_heap()
+    hp.heapify([[10, '10'], [9, '9'], [8, '8'], [7, '7'], [6, '6']])
+    print(hp)
 
+    import heapq
+    ml = [10, 9, 8, 7, 6]
+    heapq.heapify(ml)
+    print(ml)
