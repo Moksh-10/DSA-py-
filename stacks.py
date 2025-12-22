@@ -1,45 +1,59 @@
+from re import S
+
+
+class node:
+    def __init__(self, value) -> None:
+        self.value = value
+        self.next = None
+
 class Stack:
-    def __init__(self):
-        self.items = []
+    def __init__(self) -> None:
+        self.top = None
+        self.size = 0
 
-    def push(self, item):
-        self.items.append(item)
+    def __len__(self):
+        return self.size
 
-    def size(self):
-        return len(self.items)
-
-    def peek(self):
-        if len(self.items) == 0:
-            return None
-        return self.items[-1]
+    def __repr__(self) -> str:
+        items = []
+        cn = self.top
+        while cn is not None:
+            items.append(str(cn.value))
+            cn = cn.next
+        return ', '.join(items)
+    
+    def push(self, value):
+        nn = node(value)
+        nn.next = self.top
+        self.top = nn
+        self.size += 1
 
     def pop(self):
-        if len(self.items) == 0:
-            return None
-        val = self.items[-1]
-        del self.items[-1]
-        return val
+        if self.top is None:
+            raise ValueError('stack is empty')
+        pov = self.top.value
+        self.top = self.top.next
+        self.size -= 1
+        return pov
 
-# s = Stack()
-# s.push(1)
-# s.push(2)
-# s.push(3)
-# s.push(4)
-# s.pop()
-# print(s.items)
+    def peek(self):
+        if self.top is None:
+            raise ValueError('stack is empty')
+        return self.top.value
 
+    def is_empty(self):
+        return self.top is None
 
-def is_balanced(input_str):
-    s = Stack()
-    for c in input_str:
-        if c == "(":
-            s.push("ab")
-        elif c == ")":
-            popped = s.pop()
-            if popped is None:
-                return False
-    val = s.peek()
-    return val is None
-
-print(is_balanced('()()(()))'))
+if __name__ == "__main__":
+    st = Stack()
+    st.push(5)
+    st.push(10)
+    st.push(15)
+    st.push(20)
+    print(st)
+    print(st.peek())
+    print(st)
+    print(st.pop())
+    print(st)
+    print(st.is_empty())
 
