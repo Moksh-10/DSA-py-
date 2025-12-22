@@ -1,31 +1,61 @@
+class node:
+    def __init__(self, value) -> None:
+        self.value = value
+        self.next = None
+
 class Queue:
-    def __init__(self):
-        self.items = []
+    def __init__(self) -> None:
+        self.front = None
+        self.rear = None
+        self.size = 0
+    
+    def __len__(self):
+        return self.size
 
-    def push(self, item):
-        self.items.insert(0, item)
+    def __repr__(self) -> str:
+        items = []
+        cn = self.front 
+        while cn is not None:
+            items.append(str(cn.value))
+            cn = cn.next
+        return ', '.join(items)
 
-    def pop(self):
-        if len(self.items) == 0:
-            return None
-        val = self.items[-1]
-        del self.items[-1]
+    def enqueue(self, value):
+        nn = node(value)
+        if self.rear is None:
+            self.front = self.rear = nn
+        else:
+            self.rear.next = nn
+            self.rear = nn
+        self.size += 1
+
+    def dequeue(self):
+        if self.front is None:
+            raise IndexError('queue is empty')
+        dev = self.front.value
+        self.front = self.front.next
+        if self.front is None:
+            self.rear = None
+        self.size -= 1
 
     def peek(self):
-        if len(self.items) == 0:
-            return None
-        return self.items[-1]
+        if self.front is None:
+            raise IndexError('queue is empty')
+        return self.front.value
 
-    def size(self):
-        return len(self.items)
+    def is_empty(self):
+        return self.front is None
 
-q = Queue()
-q.push(1)
-q.push(2)
-q.push(3)
-q.push(4)
-print(q.items)
-q.pop()
-print(q.peek())
-print(q.items)
+if __name__ == "__main__":
+    q = Queue()
+    q.enqueue(1)
+    q.enqueue(2)
+    q.enqueue(3)
+    q.enqueue(4)
+    q.enqueue(5)
+    print(q)
+    q.dequeue()
+    print(q)
+    print(q.peek())
+    print(q.is_empty())
 
